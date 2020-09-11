@@ -33,6 +33,7 @@ class TaskController extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $task->setUser($this->getUser());
 
             $em->persist($task);
             $em->flush();
@@ -55,11 +56,17 @@ class TaskController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if($task->getUser() == $this->getUser()){
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('success', 'La tâche a bien été modifiée.');
+                
+                return $this->redirectToRoute('task_list');
+            }else{
+                $this->addFlash('error', 'You hav\'nt the rigth to edit this task. You aren\'t the owner.');
+                
+                return $this->redirectToRoute('task_list');
+            }
 
-            $this->addFlash('success', 'La tâche a bien été modifiée.');
-
-            return $this->redirectToRoute('task_list');
         }
 
         return $this->render('task/edit.html.twig', [
@@ -86,6 +93,11 @@ class TaskController extends AbstractController {
      */
     public function deleteTaskAction(Task $task)
     {
+        if ($task->getUser() !== $this->getUser()){
+            $this->addFlash('error', 'Vous n\'êtes pas le propriétaire de cette tache. Vous ne pouvez donc pas supprimer cette dernière');
+            return $this->redirectToRoute('task_list');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($task);
         $em->flush();
