@@ -15,25 +15,25 @@ This project took place in continuity with my work-study training in web develop
 
 ## Prerequisite 
 
-  * Install PHP 7.2.5 or higher and these PHP extensions
-  * Install Composer, which is used to install PHP packages.
-  * Install Mysql to manage database
-  * Install Git
+* Install PHP 7.2.5 or higher and these PHP extensions
+* Install Composer, which is used to install PHP packages.
+* Install Mysql to manage database
+* Install Git
 
 ## Install 
 
- 1. Run command : `git clone https://github.com/GATINEAU85/TODOLIST.git`
- 2. Run command : `cd TODOLIST`
- 3. Run command in bash `composer install`
- 4. Set environnement variables of the project thanks to the file that I joined you.
+1. Run command : `git clone https://github.com/GATINEAU85/TODOLIST.git`
+2. Run command : `cd TODOLIST`
+3. Run command in bash `composer install`
+4. Set environnement variables of the project thanks to the file that I joined you.
 
 ## More 
 
- 1. Config dev environment "App/.env". Thanks to this file, you can configure your database connection.
+1. Config dev environment "App/.env". Thanks to this file, you can configure your database connection.
 ```php
     DATABASE_URL=mysql://user:password@host:port/database
 ```
- 2. Data import
+2. Data import
 
 ```php
     php bin/console doctrine:database:create : To create database which is configured on .env file
