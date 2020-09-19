@@ -3,16 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Task;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class UserController extends AbstractController
 {
     /**
-     * @Route("admin/users", name="user_list")
+     * @Route("/admin/users", name="user_list")
      */
     public function listAction()
     {
@@ -46,7 +48,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("admin/users/{id}/edit", name="user_edit")
+     * @Route("/admin/users/{id}/edit", name="user_edit")
      */
     public function editAction(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -69,13 +71,17 @@ class UserController extends AbstractController
     }
     
     /**
-     * @Route("admin/users/delete/{id}", name="user_delete")
+     * @Route("/admin/users/{id}/delete", name="user_delete")
      */
-    public function deleteUser(User $user)
+    public function deleteAction(User $user)
     {
         $em = $this->getDoctrine()->getManager();
 
         if ($user == $this->getUser()){
+            $tasks = $em->getRepository(Task::class)->findByUser($user);
+            foreach ($tasks as $task){
+                $em->remove($task);
+            }
             $em->remove($user);     
             $session = $this->get('session');
             $session = new Session();
@@ -83,10 +89,14 @@ class UserController extends AbstractController
             $em->flush();
         }
         
+        $tasks = $em->getRepository(Task::class)->findByUser($user);
+        foreach ($tasks as $task){
+            $em->remove($task);
+        }
         $em->remove($user);     
         $em->flush();
             
         $this->addFlash('success', 'This delete of this user is a success.');
-        return $this->redirectToRoute('admin_user_list');
+        return $this->redirectToRoute('homepage');
     }
 }
