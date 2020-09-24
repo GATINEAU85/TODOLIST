@@ -91,7 +91,7 @@ class TaskController extends AbstractController {
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      */
-    public function deleteTaskAction(Task $task)
+    public function deleteAction(Task $task)
     {
         if ($task->getUser() !== $this->getUser()){
             $this->addFlash('error', 'Vous n\'êtes pas le propriétaire de cette tache. Vous ne pouvez donc pas supprimer cette dernière');

@@ -1,7 +1,6 @@
 # Adrien GATINEAU
 
-Hello, I'm Adrien GATINEAU. I upgrade for my studies the Todolist apps for manage task. Enjoy your discovery of  
-[Todolist](http://51.15.234.228:8001/todolist)
+Hello, I'm Adrien GATINEAU. I upgrade for my studies the Todolist apps for manage task. 
 
 ## Method
 This project was maintened and versionned by GitHub
