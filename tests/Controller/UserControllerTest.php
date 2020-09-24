@@ -86,4 +86,15 @@ class UserControllerTest extends WebTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }  
+    
+    public function testDeleteActionOnOwnUser()
+    {
+        $crawler = $this->client->request('GET', '/login');
+        $form = $crawler->selectButton('Connexion')->form();
+        $this->client->submit($form, ['username' => 'nouveau', 'password' => 'nouveau']);
+        
+        $this->client->request('GET', 'admin/users/3/delete');
+
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+    }  
 }

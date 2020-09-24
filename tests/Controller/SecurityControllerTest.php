@@ -18,7 +18,7 @@ class SecurityControllerTest extends WebTestCase{
     {
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Connexion')->form();
-        $this->client->submit($form, ['username' => 'admin', 'password' => 'admin']);
+        $this->client->submit($form, ['username' => 'user', 'password' => 'user']);
     }
 
     public function testLoginAction()
@@ -31,9 +31,13 @@ class SecurityControllerTest extends WebTestCase{
     public function testLogoutCheck()
     {
         $this->loginUser();
-        $crawler = $this->client->request('GET', '/');
-        $crawler->filter('#logout')->link();
-        //$crawler->selectLink('Se déconnecter')->link();
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+//        $crawler = $this->client->request('GET', '/');
+//        $crawler->filter('#logout')->link();
+//        //$crawler->selectLink('Se déconnecter')->link();
+//        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        
+        $this->client->request('GET', '/logout');
+
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
 }

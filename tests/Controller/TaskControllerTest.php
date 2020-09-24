@@ -66,6 +66,26 @@ class TaskControllerTest extends WebTestCase{
         $this->assertEquals(1, $crawler->filter('div.alert-success')->count());
     }
 
+    public function testEditActionErrorOwner()
+    {
+        $this->loginUser();
+
+        $crawler = $this->client->request('GET', '/tasks/2/edit');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        $form = $crawler->selectButton('Modifier')->form();
+        $form['task[title]'] = 'letitre';
+        $form['task[content]'] = 'lecontenue';
+        $this->client->submit($form);
+
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('div.alert-danger')->count());
+    }
+
     public function testToggleTaskAction(): void
     {
         $this->loginUser();
@@ -93,5 +113,19 @@ class TaskControllerTest extends WebTestCase{
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals(1, $crawler->filter('div.alert-success')->count());
+    }
+    
+    public function testDeleteActionErrorOwner()
+    {
+        $this->loginUser();
+
+        $this->client->request('GET', '/tasks/2/delete');
+
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(1, $crawler->filter('div.alert-danger')->count());
     }
 }
