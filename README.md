@@ -24,7 +24,7 @@ This project took place in continuity with my work-study training in web develop
 1. Run command : `git clone https://github.com/GATINEAU85/TODOLIST.git`
 2. Run command : `cd TODOLIST`
 3. Run command in bash `composer install`
-4. Set environnement variables of the project thanks to the file that I joined you.
+4. Set environnement variables of the project thanks to the file .env example file.
 
 ## More 
 
